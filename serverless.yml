@@ -1,0 +1,26 @@
+service: eco-management-cloud
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  memorySize: 512
+
+package:
+  individually: true
+
+custom:
+  supersecret: ${ssm:/aws/reference/secretsmanager/${opt:stage, 'dev'}/eco-management~true}
+
+functions:
+  createUser:
+    handler: createUser.index
+    environment:
+      MONGODB_URI: ${self:custom.supersecret.MONGO_URI}
+      DATABASE_NAME: ${self:custom.supersecret.MONGO_DATABASE}
+    events: # All events associated with this function
+      - http:
+          path: users
+          method: POST
+    package:
+      exclude:
+        - login.js
