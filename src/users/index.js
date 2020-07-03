@@ -3,6 +3,8 @@ const serverless = require('serverless-http');
 const mongodb = require('../../shared/mongodb');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const { validateBody } = require('./helper');
+const { validationResult } = require('express-validator');
 
 //instance an express app
 const app = express();
@@ -21,8 +23,14 @@ app.get('/user', (req, res) => {
   });
 });
 
-app.post('/user', (req, res) => {
+app.post('/user', validateBody, (req, res) => {
   let user = req.body;
+
+  // Finds the validation errors in this request and wraps them in an object with handy functions
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array() });
+  }
 
   mongodb(MONGODB_URI).then(db =>
     db

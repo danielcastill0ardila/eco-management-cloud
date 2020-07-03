@@ -12,7 +12,7 @@ custom:
   supersecret: ${ssm:/aws/reference/secretsmanager/${opt:stage, 'dev'}/eco-management~true}
 
 functions:
-  createUser:
+  user:
     handler: src/users/index.handler
     environment:
       MONGODB_URI: ${self:custom.supersecret.MONGO_URI}

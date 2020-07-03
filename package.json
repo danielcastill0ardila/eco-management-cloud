@@ -1,0 +1,29 @@
+{
+  "name": "eco-management-cloud",
+  "version": "1.0.0",
+  "description": "Serverless application to eco-management",
+  "main": "index.js",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "express-validator": "^6.6.0",
+    "mongodb": "^3.5.9",
+    "serverless-http": "^2.5.0",
+    "serverless-offline": "^6.4.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/danielcastill0ardila/eco-management-cloud.git"
+  },
+  "author": "Daniel Castillo Ardila",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/danielcastill0ardila/eco-management-cloud/issues"
+  },
+  "homepage": "https://github.com/danielcastill0ardila/eco-management-cloud#readme"
+}
