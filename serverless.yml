@@ -13,14 +13,16 @@ custom:
 
 functions:
   createUser:
-    handler: createUser.index
+    handler: src/users/index.handler
     environment:
       MONGODB_URI: ${self:custom.supersecret.MONGO_URI}
       DATABASE_NAME: ${self:custom.supersecret.MONGO_DATABASE}
-    events: # All events associated with this function
-      - http:
-          path: users
-          method: POST
+    events:
+      - http: ANY /
+      - http: 'ANY {proxy+}'
     package:
       exclude:
-        - login.js
+        - src/**
+      include:
+        - src/users/index.js
+        - shared/**
