@@ -4,6 +4,7 @@ provider:
   name: aws
   runtime: nodejs12.x
   memorySize: 512
+  region: ${opt:region, 'us-east-1'}
 
 package:
   individually: true
@@ -24,5 +25,5 @@ functions:
       exclude:
         - src/**
       include:
-        - src/users/index.js
+        - src/users/**
         - shared/**

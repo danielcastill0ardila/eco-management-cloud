@@ -3,8 +3,6 @@ const serverless = require('serverless-http');
 const mongodb = require('../../shared/mongodb');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const { validateBody } = require('./helper');
-const { validationResult } = require('express-validator');
 
 //instance an express app
 const app = express();
@@ -14,7 +12,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 app.use(bodyParser.json());
 
-const { MONGODB_URI = '' } = process.env;
+const { MONGODB_URI = '', DATABASE_NAME } = process.env;
 
 app.get('/user', (req, res) => {
   res.status(200).send({
@@ -23,27 +21,19 @@ app.get('/user', (req, res) => {
   });
 });
 
-app.post('/user', validateBody, (req, res) => {
+app.post('/user', async (req, res) => {
   let user = req.body;
 
-  // Finds the validation errors in this request and wraps them in an object with handy functions
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(422).json({ errors: errors.array() });
+  try {
+    let db = await mongodb(MONGODB_URI, DATABASE_NAME);
+    let createdUser = await db.collection('users').insert(user);
+
+    return res.send(createdUser);
+  } catch (error) {
+    //put log error in cloudwatch
+    console.log('Error, ', error.message);
+    return res.send('Error ocurred');
   }
-
-  mongodb(MONGODB_URI).then(db =>
-    db
-      .collection('users')
-      .insert(user)
-      .then(createdUser => res.status(200).send(createdUser))
-      .catch(err => {
-        //put log error in cloudWatch
-        console.log('Error, ', err.message);
-
-        return res.send('Error occured');
-      })
-  );
 });
 
 module.exports.handler = serverless(app);
