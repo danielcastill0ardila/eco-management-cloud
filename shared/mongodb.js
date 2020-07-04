@@ -9,7 +9,10 @@ async function connectToDatabase(uri, databaseName) {
     return cachedDb;
   }
 
-  let client = await MongoClient.connect(uri, { useNewUrlParser: true });
+  let client = await MongoClient.connect(uri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  });
   let database = client.db(databaseName);
   cachedDb = database;
 
