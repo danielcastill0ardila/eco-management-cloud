@@ -11,7 +11,7 @@
     "express-validator": "^6.6.0",
     "mongodb": "^3.5.9",
     "serverless-http": "^2.5.0",
-    "serverless-offline": "^6.4.0"
+    "serverless-offline": "^12.0.4"
   },
   "devDependencies": {},
   "scripts": {
